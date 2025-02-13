@@ -21,9 +21,7 @@ public class ItemController {
     private final ItemService itemService;
 
     @GetMapping("/{id}")
-    public ItemDto findById(
-            @PathVariable long id
-    ) {
+    public ItemDto findById(@PathVariable long id) {
         log.info("Получен запрос на поиск вещи с ID: {}", id);
 
         Item foundItem = itemService.findById(id);
@@ -34,9 +32,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public Collection<ItemDto> findAllForUser(
-            @RequestHeader("X-Sharer-User-Id") Long ownerId
-    ) {
+    public Collection<ItemDto> findAllForUser(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
         log.info("Получен запрос на поиск вещей пользователя с ID: {}", ownerId);
 
         Collection<Item> foundItems = itemService.findAllForUser(ownerId);
@@ -49,9 +45,7 @@ public class ItemController {
     }
 
     @GetMapping("/search")
-    public Collection<ItemDto> findByText(
-            @RequestParam(name = "text", required = false) String text
-    ) {
+    public Collection<ItemDto> findByText(@RequestParam(name = "text", required = false) String text) {
         log.info("Получен запрос на поиск вещей по тексту: {}", text);
 
         Collection<Item> foundItems = itemService.findByText(text);
@@ -65,10 +59,8 @@ public class ItemController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemDto create(
-            @RequestHeader("X-Sharer-User-Id") Long ownerId,
-            @Validated(Create.class) @RequestBody ItemDto itemDto
-    ) {
+    public ItemDto create(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+                          @Validated(Create.class) @RequestBody ItemDto itemDto) {
         log.info("Получен запрос на добавление новой вещи от пользователя с ID: {}", ownerId);
         log.info("Данные вещи: {}", itemDto);
 
@@ -81,11 +73,9 @@ public class ItemController {
     }
 
     @PatchMapping("/{id}")
-    public ItemDto update(
-            @RequestHeader("X-Sharer-User-Id") Long ownerId,
-            @PathVariable Long id,
-            @Validated(Update.class) @RequestBody ItemDto itemDto
-    ) {
+    public ItemDto update(@RequestHeader("X-Sharer-User-Id") Long ownerId,
+                          @PathVariable Long id,
+                          @Validated(Update.class) @RequestBody ItemDto itemDto) {
         log.info("Получен запрос на обновление вещи от пользователя с ID: {}", ownerId);
         log.info("Данные вещи: {}", itemDto);
 

@@ -15,9 +15,9 @@ public class UserDto {
     private Long id;
 
     @NotBlank(groups = Create.class, message = "Имя пользователя не может быть пустым")
-    String name;
+    private String name;
 
     @Email(groups = {Create.class, Update.class})
     @NotBlank(groups = Create.class, message = "email пользователя не может быть пустым")
-    String email;
+    private String email;
 }

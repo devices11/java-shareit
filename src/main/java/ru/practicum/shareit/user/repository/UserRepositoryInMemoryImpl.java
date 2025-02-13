@@ -14,7 +14,8 @@ public class UserRepositoryInMemoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findById(Long id) {
-        return users.containsKey(id) ? Optional.of(users.get(id)) : Optional.empty();
+        return Optional.ofNullable(users.get(id));
+
     }
 
     @Override

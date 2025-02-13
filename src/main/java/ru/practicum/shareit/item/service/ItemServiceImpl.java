@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
-import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.util.exception.NotFoundException;
 
 import java.util.Collection;
@@ -15,7 +15,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Override
     public Item findById(Long id) {
@@ -28,7 +28,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Collection<Item> findAllForUser(Long ownerId) {
-        userService.findById(ownerId);
+        checkUser(ownerId);
         return itemRepository.findAllForUser(ownerId);
     }
 
@@ -39,13 +39,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Item createItem(Item item) {
-        userService.findById(item.getOwner());
+        checkUser(item.getOwner());
         return itemRepository.add(item);
     }
 
     @Override
     public Item updateItem(Item item) {
-        userService.findById(item.getOwner());
+        checkUser(item.getOwner());
         Item itemFromDB = findById(item.getId());
         Item updatedItem = itemFromDB.toBuilder()
                 .name(item.getName() != null ? item.getName() : itemFromDB.getName())
@@ -53,5 +53,13 @@ public class ItemServiceImpl implements ItemService {
                 .available(item.getAvailable() != null ? item.getAvailable() : itemFromDB.getAvailable())
                 .build();
         return itemRepository.update(updatedItem);
+    }
+
+    private void checkUser(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() -> {
+                    log.info("Пользователь с id = {} не найден", userId);
+                    return new NotFoundException("Пользователь с id " + userId + " не найден");
+                });
     }
 }

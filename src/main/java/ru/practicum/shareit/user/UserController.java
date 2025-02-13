@@ -19,9 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public UserDto findById(
-            @PathVariable Long id
-    ) {
+    public UserDto findById(@PathVariable Long id) {
         log.info("Получен запрос на получение пользователя с ID: {}", id);
 
         User user = userService.findById(id);
@@ -33,9 +31,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(
-            @Validated(Create.class) @RequestBody UserDto userDto
-    ) {
+    public UserDto create(@Validated(Create.class) @RequestBody UserDto userDto) {
         log.info("Получен запрос на создание пользователя: {}", userDto);
 
         User user = UserMapper.toUser(userDto);
@@ -47,10 +43,8 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public UserDto update(
-            @PathVariable Long id,
-            @Validated(Update.class) @RequestBody UserDto userDto
-    ) {
+    public UserDto update(@PathVariable Long id,
+                          @Validated(Update.class) @RequestBody UserDto userDto) {
         log.info("Получен запрос на обновление пользователя с ID: {}, данные для обновления: {}", id, userDto);
 
         User user = UserMapper.toUser(userDto);
@@ -63,9 +57,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(
-            @PathVariable Long id
-    ) {
+    public void delete(@PathVariable Long id) {
         log.info("Получен запрос на удаление пользователя с ID: {}", id);
 
         userService.delete(id);

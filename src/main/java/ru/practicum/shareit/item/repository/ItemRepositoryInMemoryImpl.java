@@ -8,11 +8,11 @@ import java.util.stream.Collectors;
 
 @Repository
 public class ItemRepositoryInMemoryImpl implements ItemRepository {
-    Map<Long, Item> items = new HashMap<>();
+    private final Map<Long, Item> items = new HashMap<>();
 
     @Override
     public Optional<Item> findById(long id) {
-        return items.containsKey(id) ? Optional.of(items.get(id)) : Optional.empty();
+        return Optional.ofNullable(items.get(id));
     }
 
     @Override
