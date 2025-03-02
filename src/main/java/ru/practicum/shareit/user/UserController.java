@@ -5,11 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.dto.UserCreateRequestDto;
+import ru.practicum.shareit.user.dto.UserResponseDto;
+import ru.practicum.shareit.user.dto.UserUpdateRequestDto;
 import ru.practicum.shareit.user.service.UserService;
-import ru.practicum.shareit.util.validation.groups.Create;
-import ru.practicum.shareit.util.validation.groups.Update;
 
 @Slf4j
 @RestController
@@ -18,12 +17,12 @@ import ru.practicum.shareit.util.validation.groups.Update;
 public class UserController {
     private final UserService userService;
 
+
     @GetMapping("/{id}")
-    public UserDto findById(@PathVariable Long id) {
+    public UserResponseDto findById(@PathVariable Long id) {
         log.info("Получен запрос на получение пользователя с ID: {}", id);
 
-        User user = userService.findById(id);
-        UserDto foundUser = UserMapper.toUserDto(user);
+        UserResponseDto foundUser = userService.findById(id);
 
         log.info("Пользователь найден: {}", foundUser);
         return foundUser;
@@ -31,28 +30,24 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto create(@Validated(Create.class) @RequestBody UserDto userDto) {
-        log.info("Получен запрос на создание пользователя: {}", userDto);
+    public UserResponseDto create(@Validated @RequestBody UserCreateRequestDto userRequestDto) {
+        log.info("Получен запрос на создание пользователя: {}", userRequestDto);
 
-        User user = UserMapper.toUser(userDto);
-        User createdUser = userService.create(user);
-        UserDto createdUserDto = UserMapper.toUserDto(createdUser);
+        UserResponseDto createdUser = userService.create(userRequestDto);
 
-        log.info("Пользователь успешно создан: {}", createdUserDto);
-        return createdUserDto;
+        log.info("Пользователь успешно создан: {}", createdUser);
+        return createdUser;
     }
 
     @PatchMapping("/{id}")
-    public UserDto update(@PathVariable Long id,
-                          @Validated(Update.class) @RequestBody UserDto userDto) {
-        log.info("Получен запрос на обновление пользователя с ID: {}, данные для обновления: {}", id, userDto);
+    public UserResponseDto update(@PathVariable Long id,
+                                  @Validated @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+        log.info("Получен запрос на обновление пользователя с ID: {}, данные для обновления: {}", id, userUpdateRequestDto);
 
-        User user = UserMapper.toUser(userDto);
-        User updatedUser = userService.update(user.toBuilder().id(id).build());
-        UserDto updatedUserDto = UserMapper.toUserDto(updatedUser);
+        UserResponseDto updatedUser = userService.update(id, userUpdateRequestDto);
 
-        log.info("Пользователь с ID: {} успешно обновлен: {}", id, updatedUserDto);
-        return updatedUserDto;
+        log.info("Пользователь с ID: {} успешно обновлен: {}", id, updatedUser);
+        return updatedUser;
     }
 
     @DeleteMapping("/{id}")
