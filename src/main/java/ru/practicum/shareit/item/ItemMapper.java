@@ -1,7 +1,8 @@
 package ru.practicum.shareit.item;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import ru.practicum.shareit.booking.dto.BookingForItemResponseDto;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.model.Item;
@@ -9,57 +10,43 @@ import ru.practicum.shareit.user.model.User;
 
 import java.util.Collection;
 
-@Component
-@RequiredArgsConstructor
-public class ItemMapper {
+@Mapper(componentModel = "spring", uses = {CommentMapper.class})
+public interface ItemMapper {
+    ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
 
-    public ItemResponseDto toItemResponseDto(Item item) {
-        return ItemResponseDto.builder()
-                .id(item.getId())
-                .name(item.getName())
-                .description(item.getDescription())
-                .available(item.getAvailable())
-                .build();
-    }
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "description", source = "description")
+    @Mapping(target = "available", source = "available")
+    ItemResponseDto toItemResponseDto(Item item);
 
-    public ItemResponseDto toItemWithCommentsResponseDto(Item item, Collection<CommentResponseDto> comments) {
-        return ItemResponseDto.builder()
-                .id(item.getId())
-                .name(item.getName())
-                .description(item.getDescription())
-                .available(item.getAvailable())
-                .comments(comments)
-                .build();
-    }
+    @Mapping(target = "id", source = "item.id")
+    @Mapping(target = "name", source = "item.name")
+    @Mapping(target = "description", source = "item.description")
+    @Mapping(target = "available", source = "item.available")
+    @Mapping(target = "comments", source = "comments")
+    ItemResponseDto toItemWithCommentsResponseDto(Item item, Collection<CommentResponseDto> comments);
 
-    public ItemOwnerResponseDto toItemOwnerResponseDto(Item item, BookingForItemResponseDto lastBooking,
-                                                       BookingForItemResponseDto nextBooking) {
-        return ItemOwnerResponseDto.builder()
-                .id(item.getId())
-                .name(item.getName())
-                .description(item.getDescription())
-                .available(item.getAvailable())
-                .lastBooking(lastBooking)
-                .nextBooking(nextBooking)
-                .build();
-    }
+    @Mapping(target = "id", source = "item.id")
+    @Mapping(target = "name", source = "item.name")
+    @Mapping(target = "description", source = "item.description")
+    @Mapping(target = "available", source = "item.available")
+    @Mapping(target = "lastBooking", source = "lastBooking")
+    @Mapping(target = "nextBooking", source = "nextBooking")
+    ItemOwnerResponseDto toItemOwnerResponseDto(Item item, BookingForItemResponseDto lastBooking,
+                                                BookingForItemResponseDto nextBooking);
 
-    public Item toItem(ItemCreateRequestDto itemDto, User owner) {
-        return Item.builder()
-                .name(itemDto.getName())
-                .description(itemDto.getDescription())
-                .available(itemDto.getAvailable())
-                .owner(owner)
-                .build();
-    }
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "name", source = "itemDto.name")
+    @Mapping(target = "description", source = "itemDto.description")
+    @Mapping(target = "available", source = "itemDto.available")
+    @Mapping(target = "owner", source = "owner")
+    Item toItem(ItemCreateRequestDto itemDto, User owner);
 
-    public Item toItem(ItemUpdateRequestDto itemDto, Long itemId, User owner) {
-        return Item.builder()
-                .id(itemId)
-                .name(itemDto.getName())
-                .description(itemDto.getDescription())
-                .available(itemDto.getAvailable())
-                .owner(owner)
-                .build();
-    }
+    @Mapping(target = "id", source = "itemId")
+    @Mapping(target = "name", source = "itemDto.name")
+    @Mapping(target = "description", source = "itemDto.description")
+    @Mapping(target = "available", source = "itemDto.available")
+    @Mapping(target = "owner", source = "owner")
+    Item toItem(ItemUpdateRequestDto itemDto, Long itemId, User owner);
 }

@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingMapper;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.dto.BookingForItemResponseDto;
@@ -37,6 +38,7 @@ public class ItemServiceImpl implements ItemService {
     private final CommentMapper commentMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public ItemResponseDto findById(Long itemId) {
         Item itemFromDB = findItemById(itemId);
         Collection<CommentResponseDto> comments = commentRepository.findByItem_Id(itemId).stream()
@@ -46,6 +48,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Collection<ItemOwnerResponseDto> findAllForOwner(Long ownerId) {
         findUserById(ownerId);
         Collection<Item> itemsFromDB = itemRepository.findAllByOwner_Id(ownerId);
@@ -69,10 +72,10 @@ public class ItemServiceImpl implements ItemService {
                             .orElse(null);
 
                     BookingForItemResponseDto nextBookingDto = nextBooking != null
-                            ? bookingMapper.bookingForItemResponseDto(nextBooking)
+                            ? bookingMapper.toBookingForItemResponseDto(nextBooking)
                             : null;
                     BookingForItemResponseDto lastBookingDto = lastBooking != null
-                            ? bookingMapper.bookingForItemResponseDto(lastBooking)
+                            ? bookingMapper.toBookingForItemResponseDto(lastBooking)
                             : null;
 
                     return itemMapper.toItemOwnerResponseDto(item, lastBookingDto, nextBookingDto);
@@ -81,6 +84,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Collection<ItemResponseDto> findByText(String text) {
         if (text == null || text.isEmpty()) {
             return new ArrayList<>();
@@ -93,6 +97,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemResponseDto create(Long ownerId, ItemCreateRequestDto itemCreateRequestDto) {
         User user = findUserById(ownerId);
         Item item = itemMapper.toItem(itemCreateRequestDto, user);
@@ -101,6 +106,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public ItemResponseDto update(Long ownerId, Long itemId, ItemUpdateRequestDto itemUpdateRequestDto) {
         User user = findUserById(ownerId);
         Item item = itemMapper.toItem(itemUpdateRequestDto, itemId, user);
@@ -115,6 +121,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional
     public CommentResponseDto createComment(Long userId, Long itemId, CommentRequestDto commentRequestDto) {
         User user = findUserById(userId);
         Item itemFromDB = findItemById(itemId);

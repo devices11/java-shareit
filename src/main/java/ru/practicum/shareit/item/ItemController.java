@@ -77,7 +77,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommentResponseDto createComment(@RequestHeader("X-Sharer-User-Id") Long userId,
                                             @PathVariable Long itemId,
-                                            @RequestBody CommentRequestDto commentDto) {
+                                            @Validated @RequestBody CommentRequestDto commentDto) {
         log.info("Получен запрос на добавление комментария к вещи ID: {}", itemId);
 
         CommentResponseDto createdComment = itemService.createComment(userId, itemId, commentDto);

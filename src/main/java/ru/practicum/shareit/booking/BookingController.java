@@ -71,7 +71,7 @@ public class BookingController {
     @PatchMapping("/{bookingId}")
     public BookingResponseDto updateStatus(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                                            @PathVariable Long bookingId,
-                                           @RequestParam(name = "approved") Boolean approved) {
+                                           @RequestParam Boolean approved) {
         log.info("Получен запрос на подтверждение бронирование вещи от пользователя с ID: {}", ownerId);
 
         BookingResponseDto bookedItem = bookingService.updateStatus(ownerId, bookingId, approved);
