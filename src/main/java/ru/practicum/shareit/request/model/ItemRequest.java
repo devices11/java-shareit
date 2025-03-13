@@ -1,18 +1,30 @@
 package ru.practicum.shareit.request.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.Builder;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Entity
+@Table(name = "requests")
+@Getter
+@Setter
 @Builder(toBuilder = true)
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ItemRequest {
-    private  Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "requestor_id", nullable = false)
     private User requestor;
+
+    @Column(nullable = false)
     private LocalDateTime created;
 }

@@ -11,6 +11,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Collection<Item> findAllByOwner_Id(long userId);
 
+    Collection<Item> findAllByRequestIdIn(Collection<Long> requestIds);
+
+    Collection<Item> findAllByRequestId(Long requestIds);
+
     @Query("""
             SELECT i FROM Item i
             WHERE (LOWER(i.name) LIKE LOWER(CONCAT('%', :text, '%'))

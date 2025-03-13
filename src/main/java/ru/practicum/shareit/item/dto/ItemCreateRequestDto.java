@@ -16,4 +16,5 @@ public class ItemCreateRequestDto {
     @NotNull(message = "Статус доступности не может быть null")
     private Boolean available;
 
+    private Long requestId;
 }

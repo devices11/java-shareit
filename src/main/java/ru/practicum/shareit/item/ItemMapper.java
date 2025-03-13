@@ -20,6 +20,11 @@ public interface ItemMapper {
     @Mapping(target = "available", source = "available")
     ItemResponseDto toItemResponseDto(Item item);
 
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "ownerId", source = "owner.id")
+    ItemForRequestorResponseDto toItemForRequestorResponseDto(Item item);
+
     @Mapping(target = "id", source = "item.id")
     @Mapping(target = "name", source = "item.name")
     @Mapping(target = "description", source = "item.description")
@@ -41,6 +46,7 @@ public interface ItemMapper {
     @Mapping(target = "description", source = "itemDto.description")
     @Mapping(target = "available", source = "itemDto.available")
     @Mapping(target = "owner", source = "owner")
+    @Mapping(target = "requestId", source = "itemDto.requestId")
     Item toItem(ItemCreateRequestDto itemDto, User owner);
 
     @Mapping(target = "id", source = "itemId")
@@ -49,4 +55,6 @@ public interface ItemMapper {
     @Mapping(target = "available", source = "itemDto.available")
     @Mapping(target = "owner", source = "owner")
     Item toItem(ItemUpdateRequestDto itemDto, Long itemId, User owner);
+
+
 }
