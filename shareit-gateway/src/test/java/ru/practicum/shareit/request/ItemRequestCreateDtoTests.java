@@ -35,7 +35,7 @@ public class ItemRequestCreateDtoTests {
     @Test
     public void deserialize() throws Exception {
         String jsonContent = """
-                {
+                \n{
                     "description":"John Wick buried the dog"
                 }
                 """;

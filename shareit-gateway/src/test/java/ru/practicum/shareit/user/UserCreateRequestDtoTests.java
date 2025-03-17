@@ -36,7 +36,7 @@ class UserCreateRequestDtoTests {
     @Test
     public void deserialize() throws Exception {
         String jsonContent = """
-                    {
+                    \n{
                         "name": "John Wick",
                         "email": "johnwick@test.com"
                     }

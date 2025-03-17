@@ -40,7 +40,7 @@ public class BookingRequestDtoTests {
     @Test
     public void deserialize() throws Exception {
         String jsonContent = """
-                {
+                \n{
                     "itemId": 1,
                     "start": "2025-03-18T18:30:25",
                     "end": "2025-03-19T18:30:25"

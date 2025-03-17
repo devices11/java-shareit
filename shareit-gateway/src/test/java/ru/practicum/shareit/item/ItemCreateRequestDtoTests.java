@@ -40,7 +40,7 @@ public class ItemCreateRequestDtoTests {
     @Test
     public void deserialize() throws Exception {
         String jsonContent = """
-                    {
+                    \n{
                         "name": "Test",
                         "description": "Test description",
                         "available": true,

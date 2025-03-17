@@ -35,7 +35,7 @@ public class CommentRequestDtoTests {
     @Test
     public void deserialize() throws Exception {
         String jsonContent = """
-                {
+                \n{
                     "text":"John Wick buried the dog"
                 }
                 """;
