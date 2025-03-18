@@ -1,10 +1,10 @@
 package ru.practicum.shareit.user;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserCreateRequestDto;
 import ru.practicum.shareit.user.dto.UserUpdateRequestDto;
@@ -29,7 +29,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> create(@Validated @RequestBody UserCreateRequestDto userRequestDto) {
+    public ResponseEntity<Object> create(@Valid @RequestBody UserCreateRequestDto userRequestDto) {
         log.info("Получен запрос на создание пользователя: {}", userRequestDto);
 
         ResponseEntity<Object> createdUser = userClient.create(userRequestDto);
@@ -40,7 +40,7 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id,
-                                         @Validated @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+                                         @Valid @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
         log.info("Получен запрос на обновление пользователя с ID: {}, данные для обновления: {}", id, userUpdateRequestDto);
 
         ResponseEntity<Object> updatedUser = userClient.update(id, userUpdateRequestDto);

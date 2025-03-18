@@ -3,7 +3,6 @@ package ru.practicum.shareit.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.UserCreateRequestDto;
 import ru.practicum.shareit.user.dto.UserResponseDto;
@@ -30,7 +29,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponseDto create(@Validated @RequestBody UserCreateRequestDto userRequestDto) {
+    public UserResponseDto create(@RequestBody UserCreateRequestDto userRequestDto) {
         log.info("Получен запрос на создание пользователя: {}", userRequestDto);
 
         UserResponseDto createdUser = userService.create(userRequestDto);
@@ -41,7 +40,7 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public UserResponseDto update(@PathVariable Long id,
-                                  @Validated @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
+                                  @RequestBody UserUpdateRequestDto userUpdateRequestDto) {
         log.info("Получен запрос на обновление пользователя с ID: {}, данные для обновления: {}", id, userUpdateRequestDto);
 
         UserResponseDto updatedUser = userService.update(id, userUpdateRequestDto);

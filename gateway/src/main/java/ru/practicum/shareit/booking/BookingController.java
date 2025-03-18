@@ -1,10 +1,10 @@
 package ru.practicum.shareit.booking;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingRequestDto;
 import ru.practicum.shareit.booking.dto.State;
@@ -56,7 +56,7 @@ public class BookingController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> create(@RequestHeader("X-Sharer-User-Id") Long bookerId,
-                                         @Validated @RequestBody BookingRequestDto bookingRequestDto) {
+                                         @Valid @RequestBody BookingRequestDto bookingRequestDto) {
         log.info("Получен запрос на бронирование вещи от пользователя с ID: {}", bookerId);
         log.info("Данные бронирования: {}", bookingRequestDto);
 

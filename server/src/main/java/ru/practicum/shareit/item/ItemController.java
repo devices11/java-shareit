@@ -3,7 +3,6 @@ package ru.practicum.shareit.item;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.service.ItemService;
@@ -50,7 +49,7 @@ public class ItemController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemResponseDto create(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                                  @Validated @RequestBody ItemCreateRequestDto itemCreateRequestDto) {
+                                  @RequestBody ItemCreateRequestDto itemCreateRequestDto) {
         log.info("Получен запрос на добавление новой вещи от пользователя с ID: {}", ownerId);
         log.info("Данные вещи: {}", itemCreateRequestDto);
 
@@ -63,7 +62,7 @@ public class ItemController {
     @PatchMapping("/{id}")
     public ItemResponseDto update(@RequestHeader("X-Sharer-User-Id") Long ownerId,
                                   @PathVariable Long id,
-                                  @Validated @RequestBody ItemUpdateRequestDto itemUpdateRequestDto) {
+                                  @RequestBody ItemUpdateRequestDto itemUpdateRequestDto) {
         log.info("Получен запрос на обновление вещи от пользователя с ID: {}", ownerId);
         log.info("Данные вещи: {}", itemUpdateRequestDto);
 
@@ -77,7 +76,7 @@ public class ItemController {
     @ResponseStatus(HttpStatus.CREATED)
     public CommentResponseDto createComment(@RequestHeader("X-Sharer-User-Id") Long userId,
                                             @PathVariable Long itemId,
-                                            @Validated @RequestBody CommentRequestDto commentDto) {
+                                            @RequestBody CommentRequestDto commentDto) {
         log.info("Получен запрос на добавление комментария к вещи ID: {}", itemId);
 
         CommentResponseDto createdComment = itemService.createComment(userId, itemId, commentDto);

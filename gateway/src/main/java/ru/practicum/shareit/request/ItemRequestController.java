@@ -1,10 +1,10 @@
 package ru.practicum.shareit.request;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestCreateDto;
 
@@ -18,7 +18,7 @@ public class ItemRequestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> create(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                         @Validated @RequestBody ItemRequestCreateDto itemRequestCreateDto) {
+                                         @Valid @RequestBody ItemRequestCreateDto itemRequestCreateDto) {
         log.info("Получен запрос на вещ от пользователя с ID: {}", userId);
         log.info("Данные запроса: {}", itemRequestCreateDto);
 
